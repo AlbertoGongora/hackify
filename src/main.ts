@@ -1,4 +1,3 @@
-// main.ts
 import './main.css';
 import { init as authenticatorInit, login, logout } from './auth';
 import { setupNavigation, navigate } from './utils/navigation';
@@ -24,7 +23,9 @@ async function init() {
   setupNavigation();
   navigate('home');
   setupThemeToggle();
-  setupSearch(); // Configurar la búsqueda
+  setupSearch(); 
+  setupMenuToggle();
+  setupMenuItems();
 }
 
 function initPublicSection(profile?: UserProfile): void {
@@ -48,7 +49,7 @@ function renderPrivateSection(isLogged: boolean) {
 }
 
 function initMenuSection(): void {
-  document.getElementById("profileButton")!.addEventListener("click", (event) => {
+  document.getElementById("profileLink")!.addEventListener("click", (event) => {
     event.preventDefault();
     navigate('profile');
   });
@@ -67,7 +68,24 @@ function renderProfileSection(render: boolean) {
 }
 
 function renderProfileData(profile: UserProfile) {
+  // Mostrar nombre de usuario
   document.getElementById("displayName")!.innerText = profile.display_name;
+  document.getElementById("displayNameHover")!.innerText = profile.display_name;
+
+  // Mostrar avatar del usuario
+  const avatarElement = document.getElementById("imgAvatar") as HTMLImageElement;
+  if (profile.images && profile.images.length > 0) {
+    avatarElement.src = profile.images[0].url;
+  } else {
+    // Mostrar inicial del apellido si no hay imagen
+    const initial = profile.display_name.charAt(0).toUpperCase();
+    avatarElement.src = ""; 
+    avatarElement.style.backgroundColor = "#1db954";
+    avatarElement.innerText = initial; 
+    avatarElement.classList.add('avatar-initial');
+  }
+
+  // Otros datos del perfil
   document.getElementById("id")!.innerText = profile.id;
   document.getElementById("email")!.innerText = profile.email;
   document.getElementById("uri")!.innerText = profile.uri;
@@ -107,11 +125,49 @@ function setupSearch(): void {
     if (event.key === 'Enter') {
       const query = searchInput.value.trim();
       if (query) {
-        navigate('search', undefined, query); // Navegar a la vista de búsqueda
+        navigate('search', undefined, query);
       }
     }
   });
 }
 
-document.addEventListener("DOMContentLoaded", init);
+function setupMenuToggle(): void {
+  const menuToggle = document.getElementById('menu-toggle') as HTMLInputElement;
+  const asideContainer = document.getElementById('aside-container') as HTMLElement;
 
+  menuToggle.addEventListener('change', () => {
+    if (menuToggle.checked) {
+      asideContainer.classList.remove('closing');
+      asideContainer.classList.add('open');
+    } else {
+      asideContainer.classList.remove('open');
+      asideContainer.classList.add('closing');
+      setTimeout(() => {
+        asideContainer.classList.remove('closing');
+      }, 300);
+    }
+  });
+
+  window.addEventListener('resize', () => {
+    if (window.innerWidth > 430) {
+      asideContainer.classList.remove('open');
+      menuToggle.checked = false;
+    }
+  });
+}
+
+function setupMenuItems(): void {
+  const menuItems = document.querySelectorAll('.nav-aside-item');
+
+  menuItems.forEach(item => {
+    item.addEventListener('click', () => {
+      menuItems.forEach(i => i.classList.remove('active'));
+      item.classList.add('active');
+      const menuToggle = document.getElementById('menu-toggle') as HTMLInputElement;
+      menuToggle.checked = false;
+      document.getElementById('aside-container')!.classList.remove('open');
+    });
+  });
+}
+
+document.addEventListener("DOMContentLoaded", init);

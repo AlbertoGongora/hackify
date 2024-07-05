@@ -24,7 +24,7 @@ export async function renderHome(): Promise<string> {
 
 function renderPlaylistsHTML(playlists: Playlist[]): string {
   return `
-        <h2 class="playlists">Playlists <button id="refreshButton">Actualizar</button></h2>
+        <h2 class="playlists">Playlists <button id="refreshButton"><img id="refresh-button-img" src="src/img/autorenew.svg" alt="actualizar listas"></button></h2>
         <ul id="playlists" class="container-home">
             ${playlists
               .map(
@@ -35,7 +35,7 @@ function renderPlaylistsHTML(playlists: Playlist[]): string {
                         ? `<img class="playlist-image" src="${playlist.images[0].url}" alt="${playlist.name}" />`
                         : ""
                     }
-                    <p>${playlist.name}</p>
+                    <p class="playlist-name">${playlist.name}</p>
                 </li>
             `
               )
@@ -61,18 +61,19 @@ export async function renderPlaylistDetails(
   }
 
   return `
-    <div>
-      <h2><span class="back-to-playlists">Playlist</span> / ${
-        playlist.name
-      }</h2>
-      <ul>
+    <div class="playlist-details">
+      <div class="playlist-header">
+        <img class="playlist-image" src="${playlist.images[0].url}" alt="${playlist.name}" />
+        <h2 class="back-to-playlists">Playlist / ${playlist.name}</h2>
+      </div>
+      <ul class="playlist-tracks">
         ${playlist.tracks.items
           .map(
             (item) => `
-          <li data-uri="${item.track.uri}" class="track-item">
-            ${item.track.name}
-          </li>
-        `
+            <li data-uri="${item.track.uri}" class="track-item">
+              ${item.track.name}
+            </li>
+          `
           )
           .join("")}
       </ul>
@@ -85,7 +86,7 @@ export function addHomePlaylistClickHandlers() {
     item.addEventListener("click", function (this: HTMLElement) {
       const playlistId = this.getAttribute("data-id");
       if (playlistId) {
-        navigate("playlist", playlistId); // Navegar a la vista de detalles de la playlist
+        navigate("playlist", playlistId);
       } else {
         console.error("No se pudo obtener el ID de la playlist");
       }
