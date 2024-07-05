@@ -6,7 +6,7 @@ import {
 import { playTrack } from "../services/player";
 import { getPlaylistDetails } from "../services/spotifyAPI";
 import { navigate } from "../utils/navigation";
-import './Home.css';
+import "./Home.css";
 
 export async function renderHome(): Promise<string> {
   const playlists: Playlist[] = getPlaylistsCache();
@@ -24,24 +24,24 @@ export async function renderHome(): Promise<string> {
 
 function renderPlaylistsHTML(playlists: Playlist[]): string {
   return `
-        <h2 class="playlists">Playlists <button id="refreshButton"><img id="refresh-button-img" src="src/img/autorenew.svg" alt="actualizar listas"></button></h2>
-        <ul id="playlists" class="container-home">
-            ${playlists
-              .map(
-                (playlist) => `
-                <li data-id="${playlist.id}" class="playlist-item">
-                    ${
-                      playlist.images && playlist.images.length > 0
-                        ? `<img class="playlist-image" src="${playlist.images[0].url}" alt="${playlist.name}" />`
-                        : ""
-                    }
-                    <p class="playlist-name">${playlist.name}</p>
-                </li>
-            `
-              )
-              .join("")}
-        </ul>
-    `;
+    <h2 class="playlists">Playlists <button id="refreshButton"><img id="refresh-button-img" src="src/img/autorenew.svg" alt="actualizar listas"></button></h2>
+    <ul id="playlists" class="container-home">
+      ${playlists
+        .map(
+          (playlist) => `
+        <li data-id="${playlist.id}" class="playlist-item">
+          ${
+            playlist.images && playlist.images.length > 0
+              ? `<img class="playlist-image" src="${playlist.images[0].url}" alt="${playlist.name}" />`
+              : ""
+          }
+          <p class="playlist-name">${playlist.name}</p>
+        </li>
+      `
+        )
+        .join("")}
+    </ul>
+  `;
 }
 
 export async function renderPlaylistDetails(
@@ -63,7 +63,9 @@ export async function renderPlaylistDetails(
   return `
     <div class="playlist-details">
       <div class="playlist-header">
-        <img class="playlist-image" src="${playlist.images[0].url}" alt="${playlist.name}" />
+        <img class="playlist-image" src="${playlist.images[0].url}" alt="${
+    playlist.name
+  }" />
         <h2 class="back-to-playlists">Playlist / ${playlist.name}</h2>
       </div>
       <ul class="playlist-tracks">
