@@ -16,9 +16,12 @@ body {
 .dropdown-content {
   display: none;
   position: absolute;
-  top: 1.25rem;
-  margin-right: 10em;
+  top: 5em;
+  margin-right: 5em;
   right: 0;
+  background-color: #fff;
+  padding: 10px;
+  border: 1px solid #ddd;
 }
 
 .dropdown-content.show {
@@ -27,6 +30,13 @@ body {
 
 .dropdown-content a {
   color: white;
+  display: block;
+  margin-bottom: 10px;
+  text-decoration: none;
+}
+
+.dropdown-content a:last-child {
+  margin-bottom: 0;
 }
 
 .windowClick {
