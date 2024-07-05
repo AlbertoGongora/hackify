@@ -94,18 +94,22 @@
   background-color: transparent;
   border: none;
   cursor: pointer;
-  transition: scale 0.3s ease;
+  padding: 0; /* Asegura que no haya relleno dentro del botón */
+  transition: transform 0.3s ease; /* Cambiado a 'transform' para el efecto de escala */
+  display: flex; /* Para que los elementos dentro se ajusten correctamente */
+  justify-content: center; /* Centra horizontalmente la imagen */
+  align-items: center; /* Centra verticalmente la imagen */
 }
 
 #refresh-button-img {
-  width: 100%;
-  height: 100%;
+  width: 24px; /* Ajusta el tamaño de la imagen */
+  height: 24px;
 }
 
 #refreshButton:hover {
-  scale: 1.1;
-  transition: all ease 0.3s;
+  transform: scale(1.1); /* Escala el botón al hacer hover */
 }
+
 
 /* Ajustes para dispositivos más pequeños */
 @media (max-width: 768px) {
